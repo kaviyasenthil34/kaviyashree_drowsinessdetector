@@ -1,38 +1,685 @@
-.App {
-  text-align: center;
+/* App.css
+   24BCE2348 — KaviyaShree S
+   BCSE203E Web Programming */
+
+/* ══════════════════════════════════════════════
+   RESET & ROOT
+══════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+:root {
+  --ink        : #0a0a0f;
+  --ink2       : #12121a;
+  --ink3       : #1a1a26;
+  --gold       : #c9a84c;
+  --gold-lt    : #e8c97a;
+  --gold-dim   : rgba(201,168,76,0.12);
+  --gold-line  : rgba(201,168,76,0.25);
+  --cream      : #f0ead8;
+  --cream-dim  : rgba(240,234,216,0.6);
+  --muted      : #5a5a72;
+  --muted2     : #3a3a52;
+  --green      : #00ff41;
+  --yellow     : #ffb800;
+  --red        : #ff4444;
+  --red-bright : #ff0000;
+  --mono       : 'DM Mono', 'Fira Mono', monospace;
+  --sans       : 'Outfit', system-ui, sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+html, body, #root {
+  height: 100%;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--sans);
+  font-size: 14px;
+  overflow-x: hidden;
 }
 
-.App-header {
-  background-color: #282c34;
+/* ══════════════════════════════════════════════
+   APP ROOT
+══════════════════════════════════════════════ */
+.app_root {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+  background: var(--ink);
+}
+
+/* ══════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════ */
+.app_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background: var(--ink2);
+  border-bottom: 1px solid var(--gold-line);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hdr_left {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.hdr_logo {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+}
+
+.hdr_tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hdr_right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hdr_portfolio_btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: 2px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.15s;
+}
+.hdr_portfolio_btn:hover {
+  background: var(--gold-lt);
+  transform: translateY(-1px);
+}
+
+.hdr_github_btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--gold-line);
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.hdr_github_btn:hover {
+  background: var(--gold-dim);
+  transform: translateY(-1px);
+}
+
+.hdr_reg {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted2);
+  letter-spacing: 0.1em;
+}
+
+/* ══════════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════════ */
+.app_main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ══════════════════════════════════════════════
+   DETECTOR LAYOUT
+   Single definition — flex wrap so session log
+   sits as a third full-width child below the
+   camera + metrics panels.
+══════════════════════════════════════════════ */
+.kaviyaShree_detector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border-bottom: 1px solid var(--muted2);
+}
+
+.camera_section {
+  flex: 0 0 660px;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink2);
+  border-right: 1px solid var(--muted2);
+}
+
+.metrics_section {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 24px 20px;
+  background: var(--ink);
+  overflow-y: auto;
+}
+
+@media (max-width: 1100px) {
+  .camera_section  { flex: 1 1 100%; border-right: none; border-bottom: 1px solid var(--muted2); }
+  .metrics_section { flex: 1 1 100%; }
+}
+
+/* ══════════════════════════════════════════════
+   CAMERA SECTION
+══════════════════════════════════════════════ */
+.video_wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: #000;
+  overflow: hidden;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.border_level_0 { border-color: var(--muted2); }
+.border_level_1 { border-color: var(--yellow); }
+.border_level_2 { border-color: var(--red); }
+.border_level_3 { border-color: var(--red-bright); box-shadow: 0 0 0 2px rgba(255,0,0,0.3); }
+
+.kaviyaShree_video {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+.kaviyaShree_canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  transform: scaleX(-1);
+}
+
+.video_placeholder {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background: var(--ink);
+  gap: 10px;
+}
+.ph_icon { font-size: 48px; opacity: 0.3; }
+.video_placeholder p {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+}
+.video_placeholder small {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted2);
+  letter-spacing: 0.1em;
 }
 
-.App-link {
-  color: #61dafb;
+/* ── Alert Banner ── */
+.alert_banner {
+  padding: 10px 20px;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-align: center;
+  transition: all 0.2s;
+}
+.banner_0 { background: var(--ink3); color: var(--green); }
+.banner_1 { background: rgba(255,184,0,0.15); color: var(--yellow); }
+.banner_2 { background: rgba(255,68,68,0.15); color: var(--red); }
+.banner_3 { background: rgba(255,0,0,0.25); color: var(--red-bright); animation: banner_pulse 0.8s infinite; }
+
+@keyframes banner_pulse {
+  0%,100% { background: rgba(255,0,0,0.25); }
+  50%      { background: rgba(255,0,0,0.45); }
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* ── Model status bar ── */
+.model_status_bar {
+  padding: 7px 20px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  border-top: 1px solid var(--muted2);
+}
+.ms_loading { color: var(--yellow); background: rgba(255,184,0,0.06); }
+.ms_ready   { color: var(--green);  background: rgba(0,255,65,0.06); }
+.ms_failed  { color: var(--red);    background: rgba(255,68,68,0.06); }
+
+/* ── Camera controls ── */
+.cam_controls {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-top: 1px solid var(--muted2);
+  flex-wrap: wrap;
+}
+
+.btn_start {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  background: var(--gold);
+  color: var(--ink);
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn_start:hover:not(:disabled) {
+  background: var(--gold-lt);
+  transform: translateY(-1px);
+}
+.btn_start:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn_stop {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  background: rgba(255,68,68,0.15);
+  color: var(--red);
+  border: 1px solid rgba(255,68,68,0.3);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn_stop:hover {
+  background: rgba(255,68,68,0.25);
+}
+
+.student_tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted2);
+  letter-spacing: 0.08em;
+  margin-left: auto;
+}
+
+/* ══════════════════════════════════════════════
+   METRICS SECTION
+══════════════════════════════════════════════ */
+.metrics_header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--muted2);
+}
+.metrics_header h3 {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cream);
+  letter-spacing: 0.06em;
+}
+.mh_sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+}
+
+/* ── Metric cards grid ── */
+.metrics_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 2px;
+  margin-bottom: 16px;
+}
+
+.metric_card {
+  padding: 14px 12px;
+  background: var(--ink2);
+  border: 1px solid transparent;
+  border-top: 2px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+.metric_card.mc_normal  { border-top-color: var(--muted2); }
+.metric_card.mc_alert   { border-top-color: var(--red); background: rgba(255,68,68,0.06); }
+.metric_card.mc_primary { border-top-color: var(--gold); }
+.metric_card.mc_primary.mc_alert { border-top-color: var(--red); }
+
+.mc_num   { font-family: var(--mono); font-size: 10px; color: var(--muted2); margin-bottom: 4px; }
+.mc_label { font-family: var(--mono); font-size: 15px; font-weight: 500; color: var(--cream); line-height: 1; }
+.mc_full  { font-size: 9px; color: var(--muted); letter-spacing: 0.04em; margin: 3px 0 8px; line-height: 1.3; }
+.mc_value { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--gold); line-height: 1; margin-bottom: 4px; }
+.mc_alert .mc_value { color: var(--red); }
+.mc_thr   { font-size: 9px; color: var(--muted2); font-family: var(--mono); }
+.mc_dot   { font-family: var(--mono); font-size: 9px; margin-top: 6px; letter-spacing: 0.06em; }
+.dot_ok    { color: var(--green); }
+.dot_alert { color: var(--red); font-weight: 500; }
+
+/* ── Session counters ── */
+.session_counters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-bottom: 14px;
+}
+.sc_card { background: var(--ink2); padding: 12px; text-align: center; }
+.sc_val  { font-family: var(--mono); font-size: 24px; font-weight: 500; color: var(--cream); line-height: 1; }
+.sc_alert .sc_val { color: var(--red); }
+.sc_lbl  { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+/* ── Alert level steps ── */
+.alert_levels {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 2px;
+  margin-bottom: 14px;
+}
+.al_step {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 8px 6px;
+  text-align: center;
+  background: var(--ink2);
+  color: var(--muted2);
+  letter-spacing: 0.06em;
+  border: 1px solid transparent;
+  transition: all 0.2s;
+}
+.al_warning  { background: rgba(255,184,0,0.15); color: var(--yellow); border-color: rgba(255,184,0,0.3); }
+.al_drowsy   { background: rgba(255,68,68,0.15);  color: var(--red);    border-color: rgba(255,68,68,0.3); }
+.al_critical { background: rgba(255,0,0,0.25);    color: var(--red-bright); border-color: rgba(255,0,0,0.5); animation: banner_pulse 0.8s infinite; }
+
+/* ── Face status ── */
+.face_status {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 8px 12px;
+  border-radius: 2px;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+.fs_on  { background: rgba(0,255,65,0.08);  color: var(--green); border: 1px solid rgba(0,255,65,0.2); }
+.fs_off { background: var(--ink2);           color: var(--muted); border: 1px solid var(--muted2); }
+
+/* ── Calibration tip ── */
+.calib_tip {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--ink2);
+  padding: 10px 12px;
+  border-left: 2px solid var(--gold-line);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.calib_tip strong { color: var(--gold); }
+
+/* ── Portfolio / profile links ── */
+.profile_links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--muted2);
+}
+.pl_link {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  padding: 7px 14px;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.pl_portfolio { background: var(--gold); color: var(--ink); font-weight: 500; }
+.pl_portfolio:hover { background: var(--gold-lt); }
+.pl_github { background: transparent; color: var(--gold); border: 1px solid var(--gold-line); }
+.pl_github:hover { background: var(--gold-dim); }
+
+/* ── Download CV link ── place PDF at public/cv/KaviyaShree_CV.pdf ── */
+.pl_cv {
+  display: inline-block;
+  background: transparent;
+  color: var(--green);
+  border: 1px solid var(--green);
+  padding: 7px 14px;
+  border-radius: 2px;
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.pl_cv:hover {
+  background: rgba(0,255,65,0.10);
+  box-shadow: 0 0 10px rgba(0,255,65,0.25);
+}
+
+/* ══════════════════════════════════════════════
+   SESSION EVENT LOG
+   Full-width third child of .kaviyaShree_detector
+══════════════════════════════════════════════ */
+.session_log_section {
+  flex: 1 1 100%;
+  background: var(--ink2);
+  border-top: 1px solid var(--muted2);
+  overflow: hidden;
+}
+
+.session_log_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--muted2);
+  background: var(--ink);
+}
+
+.log_title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.log_header_right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.log_count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted2);
+}
+
+/* ── Download Log button ── */
+.btn_download_log {
+  background: transparent;
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 5px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn_download_log:hover {
+  background: rgba(0,255,65,0.10);
+  box-shadow: 0 0 8px rgba(0,255,65,0.25);
+}
+.btn_download_log:active {
+  background: rgba(0,255,65,0.20);
+}
+
+/* ── Empty state ── */
+.log_empty {
+  padding: 28px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted2);
+}
+
+/* ── Table wrapper ── */
+.log_table_wrap {
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+/* ── Table ── */
+.log_table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.log_table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--ink);
+  color: var(--muted);
+  text-align: left;
+  padding: 6px 16px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 9px;
+  border-bottom: 1px solid var(--muted2);
+}
+
+.log_table tbody tr {
+  border-bottom: 1px solid rgba(58,58,82,0.5);
+  transition: background 0.15s;
+}
+.log_table tbody tr:hover { background: var(--ink3); }
+
+.log_table td { padding: 8px 16px; vertical-align: middle; }
+
+/* Row tints */
+.row_critical { background: rgba(255,0,0,0.05); }
+.row_drowsy   { background: rgba(255,68,68,0.03); }
+.row_warning  { background: rgba(255,184,0,0.03); }
+
+/* Cell styles */
+.log_time  { color: var(--muted); white-space: nowrap; }
+.log_level { color: var(--muted); text-align: center; }
+.log_num   { color: var(--cream-dim); font-variant-numeric: tabular-nums; }
+.log_msg   { color: var(--muted); }
+
+/* Type badges */
+.log_type {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.log_critical { color: var(--red-bright); background: rgba(255,0,0,0.12);   border: 1px solid rgba(255,0,0,0.25); }
+.log_drowsy   { color: var(--red);        background: rgba(255,68,68,0.10); border: 1px solid rgba(255,68,68,0.22); }
+.log_warning  { color: var(--yellow);     background: rgba(255,184,0,0.10); border: 1px solid rgba(255,184,0,0.22); }
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+.app_footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background: var(--ink2);
+  border-top: 1px solid var(--muted2);
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted2);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.app_footer strong { color: var(--gold); }
+.ftr_links { display: flex; gap: 16px; }
+.ftr_links a {
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  transition: color 0.2s;
+}
+.ftr_links a:hover { color: var(--gold-lt); }
+
+/* ══════════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--gold-line); border-radius: 2px; }
+
+/* ══════════════════════════════════════════════
+   CALIBRATION BAR
+══════════════════════════════════════════════ */
+.calib_bar_wrap {
+  padding: 8px 16px;
+  background: rgba(0,191,255,0.06);
+  border-bottom: 1px solid rgba(0,191,255,0.2);
+}
+.calib_bar_label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #00BFFF;
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+}
+.calib_bar_track {
+  width: 100%;
+  height: 4px;
+  background: var(--muted2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.calib_bar_fill {
+  height: 100%;
+  background: #00BFFF;
+  border-radius: 2px;
+  transition: width 0.15s;
 }
